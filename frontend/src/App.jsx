@@ -24,7 +24,7 @@ const App = () => {
   if (isLoading) return <PageLoader />;
 
   return (
-    <div className="h-screen overflow-hidden" data-theme={theme}>
+    <div className="h-screen" data-theme={theme}>
       <Routes>
         <Route
           path="/"
