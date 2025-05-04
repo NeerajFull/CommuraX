@@ -8,7 +8,7 @@ export default function Text({ incoming, author, timestamp, content }) {
 
 
     return incoming ? (
-        <div className="max-w-lg" >
+        <div className="max-w-lg mr-auto" >
             <p className="mb-2 text-sm font-medium text-blue-50">{author}</p>
             <div className="mb-2 rounded-2xl rounded-tl-none px-5 py-3 bg-stone-600">
                 <p dangerouslySetInnerHTML={{ __html: text }}></p>
