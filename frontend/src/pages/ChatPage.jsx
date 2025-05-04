@@ -145,7 +145,7 @@ export default function ChatPage({ loggedInUserId }) {
         </div>
 
         {/* list of messages */}
-        <div className="flex flex-col px-6 py-3 gap-4 overflow-y-scroll h-[calc(100vh-190px)]">
+        <div className="flex flex-col px-6 py-3 gap-4 overflow-y-scroll h-[calc(100vh-190px)] whitespace-pre text-wrap">
           {messages.map((msg, index) => (
             <Text
               key={index}
@@ -178,14 +178,17 @@ export default function ChatPage({ loggedInUserId }) {
         <div className="w-full px-6">
           <form className="flex items-center justify-between space-x-4">
             <div className="relative w-full">
-              <input type="text" ref={inputRef} onChange={(e) => setMessage(e.target.value)}
+              <textarea type="text" ref={inputRef} onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     sendMessage(e);
                   }
                 }}
 
-                value={message} placeholder="Type something here" className="h-14 w-full rounded-md border border-stroke bg-gray pl-5 pr-20 text-black placeholder-body outline-none focus:border-primary dark:border-strokedark dark:bg-boxdark-2 dark:text-white" />
+                value={message} 
+                placeholder="Type something here" 
+                className="resize-none h-14 w-full rounded-md border border-stroke bg-gray pl-5 pr-20 pt-3 text-black placeholder-body outline-none focus:border-primary dark:border-strokedark dark:bg-boxdark-2 dark:text-white" 
+                ></textarea>
 
               <div className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center justify-end space-x-4">
                 <button onClick={handleMicClick} className="hover:text-primary">
