@@ -7,7 +7,6 @@ import { server, app } from "./lib/socket.js";
 
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
-import chatRoutes from "./routes/chat.route.js";
 import meetRoutes from "./routes/meet.route.js";
 import messageRoutes from "./routes/message.route.js";
 
@@ -31,7 +30,6 @@ app.use(cookieParser());
 app.use("/", meetRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/chat", chatRoutes);
 app.use("/api/messages", messageRoutes);
 
 if (process.env.NODE_ENV === "production") {
