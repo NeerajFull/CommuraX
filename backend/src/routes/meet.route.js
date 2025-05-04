@@ -34,12 +34,14 @@ router.get('/oauth2callback', async (req, res) => {
 
     // Redirect to create-meet endpoint after successful authentication
     res.redirect('/create-meet');
+    // res.redirect('/auth/google');
 });
 
 router.get('/create-meet', async (req, res) => {
     // Check if the token is available (if not, redirect to /auth/google)
     if (!storedTokens) {
-        return res.redirect('/auth/google');
+        return res.redirect('/auth/google'); 
+        // return res.status(401).send('Unauthorized: Please Integrate Google Meet');
     }
 
     oauth2Client.setCredentials(storedTokens); // Set credentials again here
