@@ -19,7 +19,7 @@ const __dirname = path.resolve();
 
 app.use(
   cors({
-    origin: process.env.NODE_ENV === "production" ? "https://commurax.onrender.com/" : "http://localhost:5173",
+    origin: process.env.MODE === "production" ? "https://commurax.onrender.com/" : "http://localhost:5173",
     credentials: true, // allow frontend to send cookies
   })
 );
