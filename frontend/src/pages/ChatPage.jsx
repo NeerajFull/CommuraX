@@ -105,9 +105,17 @@ export default function ChatPage({ loggedInUserId }) {
       socket.emit("send-message", {
         senderId: loggedInUserId,
         receiverId: selectedUserId,
-        content: meetingLink.data,
+        content: `
+        Hi, ${data.fullName} please join here for the Meeting!!!
+        ${meetingLink.data}
+        `,
       });
-      setMessages((prev) => [...prev, { fromSelf: true, content: meetingLink.data, timestamp: new Date() }]);
+      setMessages((prev) => [...prev, {
+        fromSelf: true, content: `
+        Hi, ${data.fullName} please join here for the Meeting!!!
+        ${meetingLink.data}
+        `, timestamp: new Date()
+      }]);
     } catch (error) {
       toast.error(error.response.data.message);
       console.error("Error creating meeting:", error);
