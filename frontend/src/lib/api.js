@@ -63,3 +63,8 @@ export async function getUserFriend(friendId) {
   const response = await axiosInstance.get(`users/friend/${friendId}`);
   return response.data;
 }
+
+export async function getAllIntegrations(){
+  const response = await axiosInstance.get(`/integrations/get-integrations/`);
+  return response.data;
+}

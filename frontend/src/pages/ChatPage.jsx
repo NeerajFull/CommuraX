@@ -10,6 +10,7 @@ import Text from "../components/Text";
 import { anotherAxiosInstance, axiosInstance } from "../lib/axios";
 import socket from "../lib/socket";
 import { formatMongoTimestamp } from "../lib/utils";
+import toast from "react-hot-toast";
 
 
 export default function ChatPage({ loggedInUserId }) {
@@ -108,13 +109,17 @@ export default function ChatPage({ loggedInUserId }) {
       });
       setMessages((prev) => [...prev, { fromSelf: true, content: meetingLink.data, timestamp: new Date() }]);
     } catch (error) {
+      toast.error(error.response.data.message);
       console.error("Error creating meeting:", error);
-      window.open(`${anotherAxiosInstance.getUri()}/create-meet`, "_blank");
     }
   }
 
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return (
+    <div className="flex justify-center py-12">
+      <span className="loading loading-spinner loading-lg"></span>
+    </div>
+  )
 
   return (
     <>
@@ -185,10 +190,10 @@ export default function ChatPage({ loggedInUserId }) {
                   }
                 }}
 
-                value={message} 
-                placeholder="Type something here" 
-                className="resize-none h-14 w-full rounded-md border border-stroke bg-gray pl-5 pr-20 pt-3 text-black placeholder-body outline-none focus:border-primary dark:border-strokedark dark:bg-boxdark-2 dark:text-white" 
-                ></textarea>
+                value={message}
+                placeholder="Type something here"
+                className="resize-none h-14 w-full rounded-md border border-stroke bg-gray pl-5 pr-20 pt-3 text-black placeholder-body outline-none focus:border-primary dark:border-strokedark dark:bg-boxdark-2 dark:text-white"
+              ></textarea>
 
               <div className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center justify-end space-x-4">
                 <button onClick={handleMicClick} className="hover:text-primary">
