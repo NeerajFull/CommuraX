@@ -13,11 +13,20 @@ import PageLoader from "./components/PageLoader.jsx";
 import useAuthUser from "./hooks/useAuthUser.js";
 import Layout from "./components/Layout.jsx";
 import IntegrationsPage from "./pages/IntegrationsPage.jsx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { setUserDetails } from "./store/slices/userSlice.js";
 
 const App = () => {
   const { isLoading, authUser } = useAuthUser();
+  const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme.theme);
+
+  useEffect(() => {
+    if (authUser) {
+      dispatch(setUserDetails(authUser));
+    }
+  }, [authUser]);
 
   const isAuthenticated = Boolean(authUser);
   const isOnboarded = authUser?.isOnboarded;

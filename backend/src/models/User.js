@@ -47,6 +47,12 @@ const userSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    // integrations: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Integration",
+    //   },
+    // ]
   },
   { timestamps: true }
 );
