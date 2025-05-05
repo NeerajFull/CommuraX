@@ -1,3 +1,4 @@
+import GoogleMeetIcon from "../../public/google-meet-icon-sm.png"
 
 export default function IntegrationsPage() {
 
@@ -12,7 +13,7 @@ export default function IntegrationsPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
                         <div className="card bg-base-200 shadow-md p-4">
                             <div className="flex items-center gap-4">
-                                <img src="https://cdn.creazilla.com/icons/3253847/google-meet-icon-sm.png" alt="Google Meet" className="w-12 h-10" />
+                                <img src={GoogleMeetIcon} alt="Google Meet" className="w-12 h-10" />
                                 <div>
                                     <h3 className="text-lg font-semibold">Google Meet</h3>
                                     <p className="text-sm text-gray-500">Schedule and join meetings easily.</p>
