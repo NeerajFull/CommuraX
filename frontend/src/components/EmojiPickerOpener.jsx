@@ -1,10 +1,10 @@
 import EmojiPicker from 'emoji-picker-react';
 import { Smile } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { useThemeStore } from '../store/useThemeStore';
+import { useSelector } from 'react-redux';
 
 export default function EmojiPickerOpner({ setEmoji }) {
-    const { theme } = useThemeStore();
+    const theme = useSelector((state) => state.theme.theme);
 
     const [pickerOpen, setPickerOpen] = useState(false);
     const pickerRef = useRef(null);
