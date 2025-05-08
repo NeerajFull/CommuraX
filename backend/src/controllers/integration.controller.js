@@ -6,7 +6,7 @@ export const getIntegrationsByUserId = async (req, res) => {
         const integration = await Integration.findOne({ userId });
 
         if (!integration) {
-            return res.status(404).json({ message: "No integrations found" });
+            return res.status(404).json({ message: "No integrations found", status: "Connect" });
         }
 
         res.status(200).json(integration);

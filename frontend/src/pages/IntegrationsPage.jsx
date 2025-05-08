@@ -1,7 +1,6 @@
 import GoogleMeetIcon from "/google-meet-icon-sm.png"
 import { anotherAxiosInstance, axiosInstance } from "../lib/axios";
 import { useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
 import { getAllIntegrations } from "../lib/api";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -9,18 +8,25 @@ import toast from "react-hot-toast";
 export default function IntegrationsPage() {
     const userId = useSelector(state => state.user.userId);
     const [btnName, setBtnName] = useState("Connect");
+    const [isLoading, setIsLoading] = useState(true);
 
-    const { isLoading, data: integrationsData } = useQuery({
-        queryKey: ["integrations"],
-        queryFn: getAllIntegrations,
-        retry: false,
-    });
+    const fetchIntegrations = async () => {
+        try {
+            setIsLoading(true);
+            const integrationsData = await getAllIntegrations();
+            setBtnName(integrationsData.status);
+        } catch (error) {
+            console.error("Error fetching integrations:", error);
+            setBtnName(error.response.data.status);
+        }
+        finally {
+            setIsLoading(false);
+        }
+    }
 
     useEffect(() => {
-        if (integrationsData) {
-            setBtnName(integrationsData.status);
-        }
-    }, [integrationsData]);
+        fetchIntegrations();
+    }, []);
 
     const handleGoogleMeetConnect = async (buttonName) => {
         try {
