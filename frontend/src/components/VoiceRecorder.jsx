@@ -41,29 +41,38 @@ export default function VoiceRecorder({ loggedInUserId, setMessages, setMessage 
             setIsRecording("stop");
         }
     };
-
+    const [sending, setSending] = useState("Send");
     const sendRecording = async () => {
-        const blob = new Blob(audioChunks, { type: "audio/webm" });
+        try {
+            setSending("Sending...");
+            const blob = new Blob(audioChunks, { type: "audio/webm" });
 
-        // Prepare form data
-        const formData = new FormData();
-        formData.append("file", blob, `voice_${Date.now()}.webm`);
-        formData.append("senderId", loggedInUserId);
-        formData.append("receiverId", selectedUserId);
+            // Prepare form data
+            const formData = new FormData();
+            formData.append("file", blob, `voice_${Date.now()}.webm`);
+            formData.append("senderId", loggedInUserId);
+            formData.append("receiverId", selectedUserId);
 
-        const { url } = await uploadAudio(formData);
+            const { url } = await uploadAudio(formData);
 
-        dispatch(setRecording(url));
-        socket.emit("send-message", {
-            senderId: loggedInUserId,
-            receiverId: selectedUserId,
-            content: url,
-            type: "audio"
-        });
-        dispatch(setVoiceModal(false));
-        setMessages((prev) => [...prev, { fromSelf: true, content: url, timestamp: new Date(), type: "audio" }]);
-        setMessage("");
-        closeModal();
+            dispatch(setRecording(url));
+            socket.emit("send-message", {
+                senderId: loggedInUserId,
+                receiverId: selectedUserId,
+                content: url,
+                type: "audio"
+            });
+            dispatch(setVoiceModal(false));
+            setMessages((prev) => [...prev, { fromSelf: true, content: url, timestamp: new Date(), type: "audio" }]);
+            setMessage("");
+            closeModal();
+        } catch (error) {
+            console.error("Error sending audio:", error);
+        }
+        finally {
+            setSending("Send");
+        }
+
     }
 
     const closeModal = () => {
@@ -126,7 +135,7 @@ export default function VoiceRecorder({ loggedInUserId, setMessages, setMessage 
                         {isRecording === "none" && <button onClick={startRecording} className="bg-blue-500 hover:bg-opacity-90 transition-all duration-200 rounded-lg px-4 py-2 text-white">Start</button>}
                         {isRecording === "start" && <button onClick={stopRecording} className="bg-red-500 hover:bg-opacity-90 transition-all duration-200 rounded-lg px-4 py-2 text-white">Stop</button>}
                         {isRecording === "stop" && <button onClick={addAudioElement} className="bg-green-500 hover:bg-opacity-90 transition-all duration-200 rounded-lg px-4 py-2 text-white">Play</button>}
-                        {isRecording === "stop" && <button onClick={sendRecording} className="bg-violet-500 hover:bg-opacity-90 transition-all duration-200 rounded-lg px-4 py-2 text-white">Send</button>}
+                        {isRecording === "stop" && <button onClick={sendRecording} className="bg-violet-500 hover:bg-opacity-90 transition-all duration-200 rounded-lg px-4 py-2 text-white">{sending}</button>}
                         <button onClick={closeModal} className="bg-black hover:bg-opacity-90 transition-all duration-200 rounded-lg px-4 py-2 text-white">Cancel</button>
                     </div>
                 </div>
