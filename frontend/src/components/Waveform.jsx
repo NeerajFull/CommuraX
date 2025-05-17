@@ -1,9 +1,8 @@
 
-export default function Waveform({ incoming, audioUrl }) {
+export default function Waveform({ audioUrl }) {
     return (
         <div
-            className={` ${incoming ? "bg-gray-950" : "bg-transparent"
-                }`}
+            className="bg-transparent"
         >
             <audio controls >
                 <source src={audioUrl} type="audio/webm" />
