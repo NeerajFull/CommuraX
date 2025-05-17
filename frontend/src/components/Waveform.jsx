@@ -1,10 +1,5 @@
 
-import { useSelector } from "react-redux";
-
-export default function Waveform({ incoming }) {
-    const audioUrl = useSelector((state) => state.app.recording);
-
-
+export default function Waveform({ incoming, audioUrl }) {
     return (
         <div
             className={` ${incoming ? "bg-gray-950" : "bg-transparent"

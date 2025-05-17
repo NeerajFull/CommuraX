@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRecording, setVoiceModal } from "../store/slices/appSlice";
 import socket from "../lib/socket";
 import { useParams } from "react-router";
+import { uploadAudio } from "../lib/api";
 
 export default function VoiceRecorder({ loggedInUserId, setMessages, setMessage }) {
     const modalRef = useRef(null);
@@ -13,7 +14,6 @@ export default function VoiceRecorder({ loggedInUserId, setMessages, setMessage 
     const [mediaRecorder, setMediaRecorder] = useState(null);
     const [audioChunks, setAudioChunks] = useState([]);
     const [isRecording, setIsRecording] = useState("none");
-    const [voiceUrl, setVoiceUrl] = useState("");
 
     const startRecording = async () => {
         try {
@@ -42,17 +42,26 @@ export default function VoiceRecorder({ loggedInUserId, setMessages, setMessage 
         }
     };
 
-    const sendRecording = () => {
-        dispatch(setRecording(voiceUrl));
+    const sendRecording = async () => {
+        const blob = new Blob(audioChunks, { type: "audio/webm" });
 
+        // Prepare form data
+        const formData = new FormData();
+        formData.append("file", blob, `voice_${Date.now()}.webm`);
+        formData.append("senderId", loggedInUserId);
+        formData.append("receiverId", selectedUserId);
+
+        const { url } = await uploadAudio(formData);
+
+        dispatch(setRecording(url));
         socket.emit("send-message", {
             senderId: loggedInUserId,
             receiverId: selectedUserId,
-            content: voiceUrl,
+            content: url,
             type: "audio"
         });
         dispatch(setVoiceModal(false));
-        setMessages((prev) => [...prev, { fromSelf: true, content: voiceUrl, timestamp: new Date(), type: "audio" }]);
+        setMessages((prev) => [...prev, { fromSelf: true, content: url, timestamp: new Date(), type: "audio" }]);
         setMessage("");
         closeModal();
     }
@@ -64,6 +73,9 @@ export default function VoiceRecorder({ loggedInUserId, setMessages, setMessage 
         setMediaRecorder(null);
         setMediaStream(null);
         const targetContainer = document.getElementById("audio-container");
+        if (!targetContainer) {
+            return;
+        }
         const audio = document.getElementsByTagName("audio")[0];
         targetContainer.removeChild(audio);
     }
@@ -87,7 +99,6 @@ export default function VoiceRecorder({ loggedInUserId, setMessages, setMessage 
         const url = URL.createObjectURL(new Blob(audioChunks, { type: "audio/webm" }));
         const audio = document.createElement("audio");
         audio.src = url;
-        setVoiceUrl(url);
         audio.controls = false;
         audio.autoplay = true;
         const targetContainer = document.getElementById("audio-container");

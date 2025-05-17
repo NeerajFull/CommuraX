@@ -78,3 +78,8 @@ export async function changePassword(data) {
   const response = await axiosInstance.post("/generate/change-password", data);
   return response.data;
 }
+
+export async function uploadAudio(data) {
+  const response = await axiosInstance.post("/upload/audio", data);
+  return response.data;
+}
