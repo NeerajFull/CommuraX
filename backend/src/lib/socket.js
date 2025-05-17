@@ -25,15 +25,15 @@ io.on('connection', (socket) => {
         onlineUsers.set(userId, socket.id);
     });
 
-    socket.on('send-message', async ({ senderId, receiverId, content }) => {
+    socket.on('send-message', async ({ senderId, receiverId, content, type }) => {
 
-        const message = new Message({ sender: senderId, receiver: receiverId, content });
+        const message = new Message({ sender: senderId, receiver: receiverId, content, type });
         await message.save();
 
         const receiverSocket = onlineUsers.get(receiverId);
         if (receiverSocket) {
             io.to(receiverSocket).emit('receive-message', {
-                senderId, content, timestamp: message.timestamp
+                senderId, content, timestamp: message.timestamp, type
             });
         }
     });

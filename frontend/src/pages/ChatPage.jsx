@@ -11,10 +11,14 @@ import { anotherAxiosInstance, axiosInstance } from "../lib/axios";
 import socket from "../lib/socket";
 import { formatMongoTimestamp } from "../lib/utils";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setVoiceModal } from "../store/slices/appSlice";
+import VoiceRecorder from "../components/VoiceRecorder";
 
 
 export default function ChatPage({ loggedInUserId }) {
   const { id: selectedUserId } = useParams();
+  const dispatch = useDispatch();
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -43,6 +47,7 @@ export default function ChatPage({ loggedInUserId }) {
           fromSelf: msg.sender === loggedInUserId,
           content: msg.content,
           timestamp: msg.timestamp,
+          type: msg.type,
         }));
         setMessages(formatted);
       } catch (err) {
@@ -57,9 +62,9 @@ export default function ChatPage({ loggedInUserId }) {
 
 
   useEffect(() => {
-    socket.on("receive-message", ({ senderId, content }) => {
+    socket.on("receive-message", ({ senderId, content, type }) => {
       if (senderId === selectedUserId) {
-        setMessages((prev) => [...prev, { fromSelf: false, content, timestamp: new Date() }]);
+        setMessages((prev) => [...prev, { fromSelf: false, content, timestamp: new Date(), type }]);
       }
     });
 
@@ -82,10 +87,11 @@ export default function ChatPage({ loggedInUserId }) {
       senderId: loggedInUserId,
       receiverId: selectedUserId,
       content: message,
+      type: "text"
 
     });
 
-    setMessages((prev) => [...prev, { fromSelf: true, content: message, timestamp: new Date() }]);
+    setMessages((prev) => [...prev, { fromSelf: true, content: message, timestamp: new Date(), type: "text" }]);
     setMessage("");
   };
 
@@ -97,6 +103,7 @@ export default function ChatPage({ loggedInUserId }) {
 
   const handleMicClick = (e) => {
     e.preventDefault();
+    dispatch(setVoiceModal(true));
   }
 
   const handleVideoCall = async () => {
@@ -109,12 +116,14 @@ export default function ChatPage({ loggedInUserId }) {
         Hi, ${data.fullName} please join here for the Meeting!!!
         ${meetingLink.data}
         `,
+        type: "text"
       });
       setMessages((prev) => [...prev, {
         fromSelf: true, content: `
         Hi, ${data.fullName} please join here for the Meeting!!!
         ${meetingLink.data}
-        `, timestamp: new Date()
+        `, timestamp: new Date(),
+        type: "text"
       }]);
     } catch (error) {
       toast.error(error.response.data.message);
@@ -156,7 +165,6 @@ export default function ChatPage({ loggedInUserId }) {
             <Dropdown />
           </div>
         </div>
-
         {/* list of messages */}
         <div className="flex flex-col px-6 py-3 gap-4 overflow-y-scroll h-[calc(100vh-190px)] whitespace-pre text-wrap">
           {messages.map((msg, index) => (
@@ -166,6 +174,7 @@ export default function ChatPage({ loggedInUserId }) {
               content={msg.content}
               incoming={!msg.fromSelf}
               timestamp={formatMongoTimestamp(msg.timestamp)}
+              type={msg.type}
             />
           ))}
           {/* <Text author={data.fullName} content={"Hi, there this is our first message. https://go.staging.setmore.com/integration"} incoming={true} timestamp={"2:44pm"} />
@@ -182,7 +191,6 @@ export default function ChatPage({ loggedInUserId }) {
           {/* <Voice incoming={false} read_receipt={"delivered"} timestamp={"2:44pm"} /> */}
 
           {/* <Media caption={"this is a car"} author={"Neeraj K"} incoming={true} read_receipt={"delivered"} timestamp={"2:44pm"} assets={[]} /> */}
-
           {/* <TypingIndicator /> */}
           <div ref={bottomRef}></div>
         </div>
@@ -223,6 +231,7 @@ export default function ChatPage({ loggedInUserId }) {
         </div>
       </div>
 
+      <VoiceRecorder loggedInUserId={loggedInUserId} setMessage={setMessage} setMessages={setMessages} />
       {/* {
         videoCall && <VideoRoom open={videoCall} handleClose={handleToggleVideoCall} />
       }
