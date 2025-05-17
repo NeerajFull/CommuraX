@@ -9,20 +9,8 @@ const LoginPage = () => {
     password: "",
   });
 
-  // This is how we did it at first, without using our custom hook
-  // const queryClient = useQueryClient();
-  // const {
-  //   mutate: loginMutation,
-  //   isPending,
-  //   error,
-  // } = useMutation({
-  //   mutationFn: login,
-  //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
-  // });
-
-  // This is how we did it using our custom hook - optimized version
   const { isPending, error, loginMutation } = useLogin();
-
+ 
   const handleLogin = (e) => {
     e.preventDefault();
     loginMutation(loginData);
@@ -40,7 +28,7 @@ const LoginPage = () => {
           <div className="mb-4 flex items-center justify-start gap-2">
             <ShipWheelIcon className="size-9 text-primary" />
             <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary  tracking-wider">
-            CommuraX
+              CommuraX
             </span>
           </div>
 
@@ -106,6 +94,14 @@ const LoginPage = () => {
                       Don't have an account?{" "}
                       <Link to="/signup" className="text-primary hover:underline">
                         Create one
+                      </Link>
+                    </p>
+                  </div>
+                  <div className="text-center mt-4">
+                    <p className="text-sm">
+                      Have you forget your Password?{" "}
+                      <Link to="/change-password" className="text-primary hover:underline">
+                        Change password
                       </Link>
                     </p>
                   </div>

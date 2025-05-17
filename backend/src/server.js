@@ -10,6 +10,7 @@ import userRoutes from "./routes/user.route.js";
 import meetRoutes from "./routes/meet.route.js";
 import messageRoutes from "./routes/message.route.js";
 import integrationRoutes from "./routes/integration.route.js";
+import passwordChangeRoutes from "./routes/passwordChange.route.js";
 
 import { connectDB } from "./lib/db.js";
 
@@ -33,6 +34,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/integrations", integrationRoutes);
+app.use("/api/generate", passwordChangeRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));

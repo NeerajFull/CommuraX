@@ -47,6 +47,7 @@ const userSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    otp: String
     // integrations: [
     //   {
     //     type: mongoose.Schema.Types.ObjectId,

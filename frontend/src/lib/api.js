@@ -68,3 +68,13 @@ export async function getAllIntegrations() {
   const response = await axiosInstance.get(`/integrations/get-integrations/`);
   return response.data;
 }
+
+export async function sendOtp(data) {
+  const response = await axiosInstance.post("/generate/send-otp", data);
+  return response.data;
+}
+
+export async function changePassword(data) {
+  const response = await axiosInstance.post("/generate/change-password", data);
+  return response.data;
+}

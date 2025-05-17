@@ -55,7 +55,7 @@ const OnboardingPage = () => {
             {/* PROFILE PIC CONTAINER */}
             <div className="flex flex-col items-center justify-center space-y-4">
               {/* IMAGE PREVIEW */}
-              <div className="size-32 rounded-full bg-base-300 overflow-hidden">
+              <div className="size-32 rounded-full bg-base-300 overflow-x-hidden">
                 {formState.profilePic ? (
                   <img
                     src={formState.profilePic}

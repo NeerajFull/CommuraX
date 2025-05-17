@@ -16,6 +16,7 @@ import IntegrationsPage from "./pages/IntegrationsPage.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setUserDetails } from "./store/slices/userSlice.js";
+import ChangePassword from "./pages/ChangePassword.jsx";
 
 const App = () => {
   const { isLoading, authUser } = useAuthUser();
@@ -34,7 +35,7 @@ const App = () => {
   if (isLoading) return <PageLoader />;
 
   return (
-    <div className="h-screen overflow-y-hidden" data-theme={theme}>
+    <div className="h-screen" data-theme={theme}>
       <Routes>
         <Route
           path="/"
@@ -58,6 +59,12 @@ const App = () => {
           path="/login"
           element={
             !isAuthenticated ? <LoginPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />
+          }
+        />
+        <Route
+          path="/change-password"
+          element={
+            <ChangePassword />
           }
         />
         <Route
