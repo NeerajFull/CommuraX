@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setVoiceModal } from "../store/slices/appSlice";
 import VoiceRecorder from "../components/VoiceRecorder";
-
+import PageLoader from "../components/PageLoader";
 
 export default function ChatPage({ loggedInUserId }) {
   const { id: selectedUserId } = useParams();
@@ -133,9 +133,7 @@ export default function ChatPage({ loggedInUserId }) {
 
 
   if (isLoading) return (
-    <div className="flex justify-center py-12">
-      <span className="loading loading-spinner loading-lg"></span>
-    </div>
+    <PageLoader />
   )
 
   return (
