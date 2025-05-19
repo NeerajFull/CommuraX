@@ -83,8 +83,13 @@ export const uploadPhoto = async (req, res) => {
             timestamp: new Date(),
         });
         const saved = await newMessage.save();
+
         if (!saved) {
             return res.status(500).json({ message: "Failed to save message" });
+        }
+        const deletedDuplicateEntry = await Message.deleteOne({ content: result.secure_url, type: "photo" });
+        if (!deletedDuplicateEntry) {
+            console.log("Failed to delete duplicate entry");
         }
         return res.status(200).json({ url: result.secure_url });
     } catch (err) {
