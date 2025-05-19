@@ -19,6 +19,7 @@ export default function Attachment({ loggedInUserId, setMessages, setMessage }) 
     const dropdown = useRef(null);
 
     const handlePhotoUpload = async (e) => {
+        toast.loading("Uploading photo...");
         const file = e.target.files[0];
         const options = {
             maxSizeMB: 0.5,         // Max size in MB
@@ -45,6 +46,7 @@ export default function Attachment({ loggedInUserId, setMessages, setMessage }) 
             });
             setMessages((prev) => [...prev, { fromSelf: true, content: url, timestamp: new Date(), type: "photo" }]);
             setMessage("");
+            toast.dismiss();
         } catch (err) {
             console.error(err);
             toast.error("Failed to upload photo");
