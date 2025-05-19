@@ -6,7 +6,7 @@ import { Mic, Phone, Send, Video } from "lucide-react";
 import Dropdown from "../components/Dropdown";
 import Attachment from "../components/Attachment";
 import EmojiPickerOpner from "../components/EmojiPickerOpener";
-import Text from "../components/Text";
+import Text from "../components/MessageWrapper";
 import { anotherAxiosInstance, axiosInstance } from "../lib/axios";
 import socket from "../lib/socket";
 import { formatMongoTimestamp } from "../lib/utils";
@@ -177,21 +177,7 @@ export default function ChatPage({ loggedInUserId }) {
               type={msg.type}
             />
           ))}
-          {/* <Text author={data.fullName} content={"Hi, there this is our first message. https://go.staging.setmore.com/integration"} incoming={true} timestamp={"2:44pm"} />
-          <Text content={"Hi, there this is our first message."} incoming={false} timestamp={"2:44pm"} />
-          <Text author={data.fullName} content={"Hi, there this is our first message."} incoming={true} timestamp={"2:44pm"} />
-          <Text content={"Hi, there this is our first message."} incoming={false} timestamp={"2:44pm"} />
-          <Text content={"Hi, there this is our first message."} incoming={false} timestamp={"2:44pm"} />
-          <Text content={"Hi, there this is our first message."} incoming={false} timestamp={"2:44pm"} />
-          <Text content={"Hi, there this is our first message."} incoming={false} timestamp={"2:44pm"} />
-          <Text content={"Hi, there this is our first message."} incoming={false} timestamp={"2:44pm"} /> */}
 
-          {/* <Document author={"Neeraj K"} content={"Hi, there this is our first message."} incoming={true} timestamp={"2:44pm"} />
-          <Document author={"Avu"} content={"Hi, there this is our first message."} incoming={false} timestamp={"2:44pm"} /> */}
-          {/* <Voice incoming={false} read_receipt={"delivered"} timestamp={"2:44pm"} /> */}
-
-          {/* <Media caption={"this is a car"} author={"Neeraj K"} incoming={true} read_receipt={"delivered"} timestamp={"2:44pm"} assets={[]} /> */}
-          {/* <TypingIndicator /> */}
           <div ref={bottomRef}></div>
         </div>
 
@@ -217,7 +203,7 @@ export default function ChatPage({ loggedInUserId }) {
                 </button>
 
 
-                <Attachment />
+                <Attachment loggedInUserId={loggedInUserId} setMessage={setMessage} setMessages={setMessages} />
 
 
                 <EmojiPickerOpner setEmoji={setMessage} />
@@ -232,20 +218,6 @@ export default function ChatPage({ loggedInUserId }) {
       </div>
 
       <VoiceRecorder loggedInUserId={loggedInUserId} setMessage={setMessage} setMessages={setMessages} />
-      {/* {
-        videoCall && <VideoRoom open={videoCall} handleClose={handleToggleVideoCall} />
-      }
-      {
-        audioCall && <AudioRoom open={audioCall} handleClose={handleToggleAudioCall} />
-      } */}
-
-      {/* {
-        userInfoOpen && (
-          <div className="w-1/4">
-            <UserInfo handleToggleUserInfo={handleToggleUserInfo} />
-          </div>
-        )
-      } */}
     </>
 
   )

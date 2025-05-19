@@ -83,3 +83,8 @@ export async function uploadAudio(data) {
   const response = await axiosInstance.post("/upload/audio", data);
   return response.data;
 }
+
+export async function uploadPhoto(data) {
+  const response = await axiosInstance.post("/upload/photo", data, { headers: { 'Content-Type': 'multipart/form-data' } });
+  return response.data;
+}
