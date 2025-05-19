@@ -41,10 +41,10 @@ export const uploadAudio = async (req, res) => {
 
         await newMessage.save();
 
-        res.status(200).json({ url: result.secure_url });
+        return res.status(200).json({ url: result.secure_url });
     } catch (error) {
         console.error("Error uploading and saving audio:", error);
-        res.status(500).json({ message: "Audio upload failed" });
+        return res.status(500).json({ message: "Audio upload failed" });
     }
 }
 
@@ -84,12 +84,14 @@ export const uploadPhoto = async (req, res) => {
             timestamp: new Date(),
         });
 
-        await newMessage.save();
-
-        res.status(200).json({ url: result.secure_url });
+        const saved = await newMessage.save();
+        if (!saved) {
+            return res.status(500).json({ message: "Failed to save message" });
+        }
+        return res.status(200).json({ url: result.secure_url });
     } catch (err) {
         console.log(err);
-        res.status(500).json({ error: 'Upload failed' });
+        return res.status(500).json({ error: 'Upload failed' });
     }
 
 }

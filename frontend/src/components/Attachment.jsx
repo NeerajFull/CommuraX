@@ -32,6 +32,10 @@ export default function Attachment({ loggedInUserId, setMessages, setMessage }) 
         formData.append("receiverId", selectedUserId);
         try {
             const { url } = await uploadPhoto(formData);
+            if (!url) {
+                toast.error("Failed to upload photo");
+                return;
+            }
             dispatch(setPhotoUrl(url));
             socket.emit("send-message", {
                 senderId: loggedInUserId,
@@ -45,8 +49,6 @@ export default function Attachment({ loggedInUserId, setMessages, setMessage }) 
             console.error(err);
             toast.error("Failed to upload photo");
         }
-
-
     }
 
     useEffect(() => {

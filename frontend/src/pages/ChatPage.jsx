@@ -6,7 +6,7 @@ import { Mic, Phone, Send, Video } from "lucide-react";
 import Dropdown from "../components/Dropdown";
 import Attachment from "../components/Attachment";
 import EmojiPickerOpner from "../components/EmojiPickerOpener";
-import Text from "../components/MessageWrapper";
+import MessageWrapper from "../components/MessageWrapper";
 import { anotherAxiosInstance, axiosInstance } from "../lib/axios";
 import socket from "../lib/socket";
 import { formatMongoTimestamp } from "../lib/utils";
@@ -168,7 +168,7 @@ export default function ChatPage({ loggedInUserId }) {
         {/* list of messages */}
         <div className="flex flex-col px-6 py-3 gap-4 overflow-y-scroll h-[calc(100vh-190px)] whitespace-pre text-wrap">
           {messages.map((msg, index) => (
-            <Text
+            <MessageWrapper
               key={index}
               author={data.fullName}
               content={msg.content}
