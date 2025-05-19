@@ -39,6 +39,10 @@ export const uploadAudio = async (req, res) => {
         });
 
         await newMessage.save();
+        const deletedDuplicateEntry = await Message.deleteOne({ content: result.secure_url, type: "audio" });
+        if (!deletedDuplicateEntry) {
+            console.log("Failed to delete duplicate entry");
+        }
 
         return res.status(200).json({ url: result.secure_url });
     } catch (error) {
