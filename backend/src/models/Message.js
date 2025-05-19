@@ -9,4 +9,5 @@ const messageSchema = new mongoose.Schema({
   type: { type: String, enum: ['text', 'audio', 'photo'], required: true },
 });
 
+messageSchema.index({ sender: 1, receiver: 1, content: 1 }, { unique: true });
 export default mongoose.model('Message', messageSchema);

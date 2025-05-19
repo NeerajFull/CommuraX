@@ -82,11 +82,8 @@ export const uploadPhoto = async (req, res) => {
             type: "photo",
             timestamp: new Date(),
         });
-        console.log("🧪 Saving message to DB...");
         const saved = await newMessage.save();
-        console.log("✅ Message saved:", saved._id);
         if (!saved) {
-            console.log("⚠️ Called ONCE");
             return res.status(500).json({ message: "Failed to save message" });
         }
         return res.status(200).json({ url: result.secure_url });
