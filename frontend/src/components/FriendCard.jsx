@@ -1,7 +1,12 @@
 import { Link } from "react-router";
 import { LANGUAGE_TO_FLAG } from "../constants";
+import { useSelector } from "react-redux";
 
 const FriendCard = ({ friend }) => {
+  const onlineUsers = useSelector((state) => state.app.onlineUsers);
+
+  const isOnline = onlineUsers.includes(friend._id);
+
   return (
     <div className="card bg-base-200 hover:shadow-md transition-shadow">
       <div className="card-body p-4">
@@ -10,10 +15,17 @@ const FriendCard = ({ friend }) => {
           <div className="avatar size-12">
             <img src={friend.profilePic} alt={friend.fullName} />
           </div>
-          <h3 className="font-semibold truncate">{friend.fullName}</h3>
+          <div className="flex flex-col">
+            <h3 className="font-semibold truncate">{friend.fullName}</h3>
+            <div className="text-xs text-green-500">
+              {
+                isOnline && <span>● Online</span>
+              }
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-wrap gap-1.5 mb-3">
+        <div className="flex flex-col flex-wrap gap-1.5 mb-3">
           <span className="badge badge-secondary text-xs">
             {getLanguageFlag(friend.nativeLanguage)}
             Native: {friend.nativeLanguage}
@@ -22,6 +34,7 @@ const FriendCard = ({ friend }) => {
             {getLanguageFlag(friend.learningLanguage)}
             Learning: {friend.learningLanguage}
           </span>
+          <span className="text-sm text-blue-400 text-wrap break-words">{friend.bio}</span>
         </div>
 
         <Link to={`/chat/${friend._id}`} className="btn btn-outline w-full">
