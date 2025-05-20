@@ -22,6 +22,9 @@ const FriendCard = ({ friend }) => {
             {getLanguageFlag(friend.learningLanguage)}
             Learning: {friend.learningLanguage}
           </span>
+          <span className="text-sm text-sky-400">
+            {friend.bio}
+          </span>
         </div>
 
         <Link to={`/chat/${friend._id}`} className="btn btn-outline w-full">
