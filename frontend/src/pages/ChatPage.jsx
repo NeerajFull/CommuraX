@@ -27,10 +27,10 @@ export default function ChatPage({ loggedInUserId }) {
   const onlineUsers = useSelector(state => state.app.onlineUsers);
   const isOnline = onlineUsers.includes(selectedUserId)
 
-  // useEffect(() => {
-  //   // Add user to socket connection
-  //   socket.emit("add-user", loggedInUserId);
-  // }, [loggedInUserId]);
+  useEffect(() => {
+    // Add user to socket connection
+    socket.emit("add-user", loggedInUserId);
+  }, [loggedInUserId]);
 
   useEffect(() => {
     inputRef.current?.focus();
