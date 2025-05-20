@@ -41,15 +41,9 @@ const App = () => {
       socket.on('user-online', (newUserId) => {
         dispatch(addOnlineUser(newUserId));
       });
-
       socket.on('user-offline', (offlineUserId) => {
         dispatch(removeOnlineUser(offlineUserId));
       });
-
-      return () => {
-        socket.disconnect();
-      };
-
     }
   }, [authUser, onlineUsers]);
 
