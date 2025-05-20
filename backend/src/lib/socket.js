@@ -17,14 +17,12 @@ const io = new Server(server, {
 
 const onlineUsers = new Map();
 
+
 io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
     socket.on('add-user', (userId) => {
         onlineUsers.set(userId, socket.id);
-
-        // Notify other users this user is online
-        socket.broadcast.emit('user-online', userId);
     });
 
     socket.on('send-message', async ({ senderId, receiverId, content, type }) => {
@@ -40,18 +38,11 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('show-online-status', () => {
-        const onlineUserIds = Array.from(onlineUsers.keys());
-        socket.emit('online-users', onlineUserIds);
-    });
-
-
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);
-        for (const [key, value] of onlineUsers.entries()) {
+        for (let [key, value] of onlineUsers.entries()) {
             if (value === socket.id) {
                 onlineUsers.delete(key);
-                socket.broadcast.emit('user-offline', key); // 🔥 Notify others
                 break;
             }
         }

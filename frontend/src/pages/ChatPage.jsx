@@ -11,7 +11,7 @@ import { anotherAxiosInstance, axiosInstance } from "../lib/axios";
 import socket from "../lib/socket";
 import { formatMongoTimestamp } from "../lib/utils";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setVoiceModal } from "../store/slices/appSlice";
 import VoiceRecorder from "../components/VoiceRecorder";
 import PageLoader from "../components/PageLoader";
@@ -24,8 +24,11 @@ export default function ChatPage({ loggedInUserId }) {
   const [messages, setMessages] = useState([]);
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
-  const onlineUsers = useSelector(state => state.app.onlineUsers);
-  const isOnline = onlineUsers.includes(selectedUserId)
+
+  useEffect(() => {
+    // Add user to socket connection
+    socket.emit("add-user", loggedInUserId);
+  }, [loggedInUserId]);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -143,15 +146,9 @@ export default function ChatPage({ loggedInUserId }) {
               <img src={data.profilePic} alt="avatar" className="object-cover object-center" width={50} height={50} />
             </div>
 
-            <div className="flex flex-col">
+            <div>
               <h5 className="font-medium text-black dark:text-white">{data.fullName}</h5>
-              <div className="text-xs text-green-500">
-                {
-                  isOnline && <span>● Online</span>
-                }
-              </div>
             </div>
-
           </div>
 
           <div className="flex items-center space-x-8">

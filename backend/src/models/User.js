@@ -47,11 +47,13 @@ const userSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    otp: String,
-    isOnline: {
-      type: Boolean,
-      default: false,
-    },
+    otp: String
+    // integrations: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Integration",
+    //   },
+    // ]
   },
   { timestamps: true }
 );
