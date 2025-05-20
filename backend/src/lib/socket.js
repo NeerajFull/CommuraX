@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
         for (const [key, value] of onlineUsers.entries()) {
             if (value === socket.id) {
                 onlineUsers.delete(key);
-                socket.broadcast.emit('user-offline', userId); // 🔥 Notify others
+                socket.broadcast.emit('user-offline', key); // 🔥 Notify others
                 break;
             }
         }
